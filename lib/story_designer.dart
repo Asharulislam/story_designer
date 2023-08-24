@@ -62,7 +62,17 @@ class _StoryDesignerState extends State<StoryDesigner> {
   double currentFontSize = 26.0;
 
   // current textfield fontfamily list
-  List<String> fontFamilyList = ["Lato", "Montserrat", "Lobster", "Spectral SC", "Dancing Script", "Oswald", "Turret Road", "Noto Serif", "Anton"];
+  List<String> fontFamilyList = [
+    "Lato",
+    "Montserrat",
+    "Lobster",
+    "Spectral SC",
+    "Dancing Script",
+    "Oswald",
+    "Turret Road",
+    "Noto Serif",
+    "Anton"
+  ];
   // current textfield fontfamily
   int currentFontFamily = 0;
 
@@ -163,7 +173,9 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                     : EdgeInsets.all(0),
                                 decoration: currentTextStyle != 0
                                     ? BoxDecoration(
-                                        color: currentTextStyle == 1 ? Colors.black.withOpacity(1.0) : Colors.white.withOpacity(1.0),
+                                        color: currentTextStyle == 1
+                                            ? Color(0xFF20B688).withOpacity(1.0)
+                                            : Color(0xFF8BD1B9).withOpacity(1.0),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(4),
                                         ),
@@ -172,7 +184,9 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                 child: TextField(
                                   autofocus: true,
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.getFont(fontFamilyList[currentFontFamily]).copyWith(
+                                  style: GoogleFonts.getFont(
+                                          fontFamilyList[currentFontFamily])
+                                      .copyWith(
                                     color: currentColor,
                                     fontSize: currentFontSize,
                                   ),
@@ -233,14 +247,16 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     IconButton(
-                                      icon: Icon(Icons.color_lens_outlined, color: Colors.white),
+                                      icon: Icon(Icons.color_lens_outlined,
+                                          color: Colors.white),
                                       onPressed: () {
                                         // raise the [showDialog] widget
                                         showDialog(
                                           context: context,
                                           builder: (ctx) {
                                             return AlertDialog(
-                                              title: const Text('Pick a color!'),
+                                              title:
+                                                  const Text('Pick a color!'),
                                               content: SingleChildScrollView(
                                                 child: ColorPicker(
                                                   pickerColor: pickerColor,
@@ -258,7 +274,8 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                                   child: const Text('Got it'),
                                                   onPressed: () {
                                                     setState(() {
-                                                      currentColor = pickerColor;
+                                                      currentColor =
+                                                          pickerColor;
                                                     });
                                                     Navigator.of(ctx).pop();
                                                   },
@@ -281,13 +298,20 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                             : EdgeInsets.all(0),
                                         decoration: currentTextStyle != 0
                                             ? BoxDecoration(
-                                                color: currentTextStyle == 1 ? Colors.black.withOpacity(1.0) : Colors.white.withOpacity(1.0),
+                                                color: currentTextStyle == 1
+                                                    ? Color(0xFF20B688)
+                                                        .withOpacity(1.0)
+                                                    : Color(0xFF8BD1B9)
+                                                        .withOpacity(1.0),
                                                 borderRadius: BorderRadius.all(
                                                   Radius.circular(4),
                                                 ),
                                               )
                                             : BoxDecoration(),
-                                        child: Icon(Icons.auto_awesome, color: currentTextStyle != 2 ? Colors.white : Colors.black),
+                                        child: Icon(Icons.auto_awesome,
+                                            color: currentTextStyle != 2
+                                                ? Colors.white
+                                                : Colors.black),
                                       ),
                                       onPressed: () {
                                         if (currentTextStyle < 2) {
@@ -310,7 +334,8 @@ class _StoryDesignerState extends State<StoryDesigner> {
                               child: Transform(
                                 alignment: FractionalOffset.center,
                                 // Rotate sliders by 90 degrees
-                                transform: new Matrix4.identity()..rotateZ(270 * 3.1415927 / 180),
+                                transform: new Matrix4.identity()
+                                  ..rotateZ(270 * 3.1415927 / 180),
                                 child: SizedBox(
                                   width: 300,
                                   child: Slider(
@@ -318,7 +343,8 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                       min: 14,
                                       max: 74,
                                       activeColor: Colors.white,
-                                      inactiveColor: Colors.white.withOpacity(0.4),
+                                      inactiveColor:
+                                          Colors.white.withOpacity(0.4),
                                       onChanged: (input) {
                                         setState(() {
                                           currentFontSize = input;
@@ -350,15 +376,21 @@ class _StoryDesignerState extends State<StoryDesigner> {
                                           width: 40,
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
-                                            color: index == currentFontFamily ? Colors.white : Colors.black,
+                                            color: index == currentFontFamily
+                                                ? Colors.white
+                                                : Colors.black,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(20),
                                             ),
                                           ),
                                           child: Text(
                                             'Aa',
-                                            style: GoogleFonts.getFont(fontFamilyList[index]).copyWith(
-                                              color: index == currentFontFamily ? Colors.black : Colors.white,
+                                            style: GoogleFonts.getFont(
+                                                    fontFamilyList[index])
+                                                .copyWith(
+                                              color: index == currentFontFamily
+                                                  ? Colors.black
+                                                  : Colors.white,
                                             ),
                                           ),
                                         ),
@@ -381,40 +413,59 @@ class _StoryDesignerState extends State<StoryDesigner> {
                 child: Positioned(
                     top: 50,
                     right: 20,
-                    child: TextButton(
-                      onPressed: () async {
-                        //done: save image and return captured image to previous screen
-
-                        final directory = (await getApplicationDocumentsDirectory()).path;
-                        Uint8List? pngBytes = await screenshotController.capture();
-                        print('captured: $pngBytes');
-
-                        File imgFile = new File('$directory/' + DateTime.now().toString() + '.png');
-                        imgFile.writeAsBytes(pngBytes!).then((value) {
-                          // done: return imgFile
-                          Navigator.of(context).pop(imgFile);
-                        });
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.7)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: Row(
+                      children: [
+                      Text(
+                        '"Tap on the center of the image to write"',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
                         ),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Done',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
+                     SizedBox(width: 50,),
+                      TextButton(
+                        onPressed: () async {
+                          //done: save image and return captured image to previous screen
+
+                          final directory =
+                              (await getApplicationDocumentsDirectory()).path;
+                          Uint8List? pngBytes =
+                              await screenshotController.capture();
+                          print('captured: $pngBytes');
+
+                          File imgFile = new File('$directory/' +
+                              DateTime.now().toString() +
+                              '.png');
+                          imgFile.writeAsBytes(pngBytes!).then((value) {
+                            // done: return imgFile
+                            Navigator.of(context).pop(imgFile);
+                          });
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.black.withOpacity(0.7)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
                           ),
-                        ],
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Next',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    )),
+                    ])),
               ),
             ),
             Visibility(
@@ -472,14 +523,16 @@ class _StoryDesignerState extends State<StoryDesigner> {
           widget = Container(
             padding: EdgeInsets.only(left: 7, right: 7, top: 5, bottom: 5),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(1.0),
+              color: Color(0xFF20B688).withOpacity(1.0)
+                                            ,
               borderRadius: BorderRadius.all(
                 Radius.circular(4),
               ),
             ),
             child: Text(
               e.value,
-              style: GoogleFonts.getFont(fontFamilyList[e.fontFamily!]).copyWith(
+              style:
+                  GoogleFonts.getFont(fontFamilyList[e.fontFamily!]).copyWith(
                 color: e.color,
                 fontSize: e.fontSize,
               ),
@@ -489,14 +542,15 @@ class _StoryDesignerState extends State<StoryDesigner> {
           widget = Container(
             padding: EdgeInsets.only(left: 7, right: 7, top: 5, bottom: 5),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(1.0),
+              color: Color(0xFF8BD1B9).withOpacity(1.0),
               borderRadius: BorderRadius.all(
                 Radius.circular(4),
               ),
             ),
             child: Text(
               e.value,
-              style: GoogleFonts.getFont(fontFamilyList[e.fontFamily!]).copyWith(
+              style:
+                  GoogleFonts.getFont(fontFamilyList[e.fontFamily!]).copyWith(
                 color: e.color,
                 fontSize: e.fontSize,
               ),
@@ -541,7 +595,9 @@ class _StoryDesignerState extends State<StoryDesigner> {
               _inAction = false;
               print("e.position.dy: " + e.position.dy.toString());
               print("e.position.dx: " + e.position.dx.toString());
-              if (e.position.dy >= 0.8 && e.position.dx >= 0.0 && e.position.dx <= 1.0) {
+              if (e.position.dy >= 0.8 &&
+                  e.position.dx >= 0.0 &&
+                  e.position.dx <= 1.0) {
                 print('Delete the Item');
 
                 setState(() {
@@ -558,7 +614,9 @@ class _StoryDesignerState extends State<StoryDesigner> {
             onPointerMove: (details) {
               print("e.position.dy: " + e.position.dy.toString());
               print("e.position.dx: " + e.position.dx.toString());
-              if (e.position.dy >= 0.8 && e.position.dx >= 0.0 && e.position.dx <= 1.0) {
+              if (e.position.dy >= 0.8 &&
+                  e.position.dx >= 0.0 &&
+                  e.position.dx <= 1.0) {
                 print('Delete the Item');
 
                 setState(() {
